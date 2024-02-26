@@ -1,0 +1,34 @@
+.main{
+    min-height: 93vh;
+    display: flex;
+    align-items: center;
+    background-color: aqua;
+    background-image: url('../../asset/background.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.intro-text{
+    width: 100%;
+    text-align: center;
+}
+.title{
+    font-size: 5rem;
+    margin-top: 9rem;
+}
+
+.subtitle{
+    font-size: 2rem;
+    padding-top: 10px;
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.landingButton1{
+
+    margin-right: 10px;
+}
