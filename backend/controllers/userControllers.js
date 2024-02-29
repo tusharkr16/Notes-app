@@ -1,5 +1,7 @@
 const User = require("../models/userModel")
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
+const bcrypt = require('bcryptjs');
+const generateToken = require("../utils/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, pic } = req.body;
@@ -26,6 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
             email: user.email,
             isAdmin: user.isAdmin,
             pic: user.pic,
+            token: generateToken(user._id)
         })
     }
     else {
@@ -39,4 +42,26 @@ const registerUser = asyncHandler(async (req, res) => {
     console.log("hello")
 })
 
-module.exports = { registerUser }
+const authUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (user) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            res.status(412).json({ error: "Invalid credentials" });
+        }
+        else {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                pic: user.pic,
+                token: generateToken(user._id)
+            });
+        }
+    }
+})
+
+module.exports = { registerUser, authUser }
