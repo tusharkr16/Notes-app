@@ -48,6 +48,7 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log(user.password)
         if (!isMatch) {
             res.status(412).json({ error: "Invalid credentials" });
         }
@@ -61,6 +62,9 @@ const authUser = asyncHandler(async (req, res) => {
                 token: generateToken(user._id)
             });
         }
+    }
+    else {
+        res.status(412).json({ error: "Invalid credentials" });
     }
 })
 
