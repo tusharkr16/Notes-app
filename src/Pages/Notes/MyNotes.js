@@ -15,16 +15,24 @@ const MyNotes = () => {
 
     const fetchNotes = async () => {
         try {
-            const { data } = await axios.get('/api/notes');
+            const userInfoString = localStorage.getItem("userInfo");
+            const userInfo = JSON.parse(userInfoString);
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`
+                }
+            }
+            const { data } = await axios.get('http://localhost:5000/api/notes',
+                config
+            );
             setNotes(data);
-
+            console.log(data);
         } catch (error) {
             console.log(error);
         }
-
     }
 
-    console.log(notes)
+    // console.log(notes)
     useEffect(() => {
         fetchNotes();
     }, [])

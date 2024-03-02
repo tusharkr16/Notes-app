@@ -36,6 +36,7 @@ const Login = () => {
             console.log(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             setLoading(false);
+            // Navigate('/myNotes');
         } catch (error) {
             console.error("Login Error:", error);
             if (error.response && error.response.data && error.response.data.message) {

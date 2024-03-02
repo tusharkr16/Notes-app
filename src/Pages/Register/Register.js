@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row } from 'react-bootstrap'
 import { Form, Button, Col } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Error from '../../components/Error';
 import Screen from '../Screen';
 import axios from 'axios';
 import Loading from '../../components/Loading';
 
 const Register = () => {
+    const Navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [pic, setPic] = useState(
@@ -66,8 +67,9 @@ const Register = () => {
                     config
                 );
                 setLoading(false);
-                localStorage.setItem("userInfo", JSON.stringify(data));
+                // localStorage.setItem("userInfo", JSON.stringify(data));
                 console.log(data);
+                Navigate('/login')
             } catch (error) {
                 console.error("Registration Error:", error);
                 SetError(error.response.data.message);
@@ -78,6 +80,13 @@ const Register = () => {
         console.log(pic)
 
     }
+
+    // useEffect(() => {
+    //     const userInfo = localStorage.getItem("userInfo");
+    //     if (userInfo) {
+    //         Navigate('/login')
+    //     }
+    // }, [Navigate])
     return (
         <Screen title="REGISTER">
             <div className="container">
