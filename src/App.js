@@ -1,5 +1,7 @@
 
 import './App.css';
+import Createnote from './Pages/CreateNotes/Createnote';
+import SingleNotes from './Pages/CreateNotes/SingleNotes';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import MyNotes from './Pages/Notes/MyNotes';
@@ -18,7 +20,10 @@ function App() {
             <Route path='/' Component={Home} exact />
             <Route path='/myNotes' Component={() => <MyNotes />} />
             <Route path='/login' Component={Login} />
-            <Route path='/register' Component={Register} exact />
+            <Route path='/register' Component={Register} />
+            <Route path='/createNote' Component={Createnote} />
+            <Route path="/MyNote/:id" element={<SingleNotes />} />
+
           </Routes>
         </main>
         <Footer />

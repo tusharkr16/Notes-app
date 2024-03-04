@@ -2,13 +2,18 @@ const Note = require('../models/notesModel');
 const asyncHandler = require('express-async-handler')
 
 const getNotes = asyncHandler(async (req, res) => {
-
+    if (!req.user) {
+        res.status(401);
+        throw new Error("Not authorized, user not found");
+    }
+    console.log(req.user);
     const notes = await Note.find({ user: req.user._id });
     res.json(notes);
 });
 
 const createNote = asyncHandler(async (req, res) => {
     const { title, content, category } = req.body;
+    console.log(req.user._id);
 
     if (!title || !content || !category) {
         res.status(400)

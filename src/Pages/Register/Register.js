@@ -92,7 +92,8 @@ const Register = () => {
             <div className="container">
                 <div className="loginContainer">
                     {error && <Error variant='danger'>{error}</Error>}
-                    {loading && <Loading />}
+                    {loading && <Loading variant='danger' />}
+                    {message && <Loading variant='warning' />}
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId="name">
                             <Form.Label>Name</Form.Label>
