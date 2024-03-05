@@ -49,25 +49,30 @@ const SingleNotes = () => {
 
     const updateHandler = async (e) => {
         e.preventDefault();
-        try {
-            console.log(id);
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${userInfo.token}`
+        if (!title || !content || !category) {
+            setError("Please fill all the fields");
+        } else {
+
+            try {
+                console.log(id);
+                const config = {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `Bearer ${userInfo.token}`
+                    }
                 }
+
+                const { data } = await axios.put(`http://localhost:5000/api/notes/${id}`,
+                    { title, content, category },
+                    config
+                )
+
+                setLoading(false);
+                Navigate('/myNotes');
+            } catch (error) {
+                console.log(error);
+                setError(error.response.data.message);
             }
-
-            const { data } = await axios.put(`http://localhost:5000/api/notes/${id}`,
-                { title, content, category },
-                config
-            )
-
-            setLoading(false);
-            Navigate('/myNotes');
-        } catch (error) {
-            console.log(error);
-            setError(error);
         }
     }
 

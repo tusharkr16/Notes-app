@@ -18,20 +18,24 @@ const MyNotes = () => {
     const userInfoString = localStorage.getItem("userInfo");
     const userInfo = JSON.parse(userInfoString);
 
-    const deleteHandler = async () => {
-        try {
-            // setLoading(true);
-            window.alert('Are you sure? You want to delete the note')
+    const deleteHandler = async (id) => {
+        console.log(id);
 
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${userInfo.token}`
+        try {
+            const shouldDelete = window.confirm('Are you sure? You want to delete the note');
+            if (shouldDelete) {
+                // setLoading(true);
+
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${userInfo.token}`
+                    }
                 }
+                const { data } = await axios.delete(`http://localhost:5000/api/notes/${id}`,
+                    config
+                );
+                setLoading(false);
             }
-            const { data } = await axios.delete(`http://localhost:5000/api/notes/${userInfo._id}`,
-                config
-            );
-            setLoading(false);
         } catch (error) {
             console.log(error);
             if (error.response && error.response.data && error.response.data.message) {
@@ -61,14 +65,6 @@ const MyNotes = () => {
                 setError(error.response.data.message);
             }
             setLoading(false);
-        }
-    }
-
-    const deleteNotes = async () => {
-        try {
-
-        } catch (error) {
-
         }
     }
 

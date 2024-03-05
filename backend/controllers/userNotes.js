@@ -59,6 +59,7 @@ const updateNote = asyncHandler(async (req, res) => {
 
 const deleteNote = asyncHandler(async (req, res) => {
     const note = await Note.findById(req.params.id);
+    // console.log(note.user.toString());
     if (note.user.toString() !== req.user._id.toString()) {
         res.status(401);
         throw new Error("You cant perform this action");

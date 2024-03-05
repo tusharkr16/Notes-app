@@ -5,6 +5,7 @@ import SingleNotes from './Pages/CreateNotes/SingleNotes';
 import Home from './Pages/Home/Home';
 import Login from './Pages/Login/Login';
 import MyNotes from './Pages/Notes/MyNotes';
+import Profile from './Pages/Profile/Profile';
 import Register from './Pages/Register/Register';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
@@ -23,6 +24,7 @@ function App() {
             <Route path='/register' Component={Register} />
             <Route path='/createNote' Component={Createnote} />
             <Route path="/MyNote/:id" element={<SingleNotes />} />
+            <Route path='/profile' Component={Profile} />
 
           </Routes>
         </main>

@@ -20,6 +20,7 @@ const Register = () => {
     const [error, SetError] = useState();
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
+
     const postDetails = async (pics) => {
         console.log(pics);
         if (!pics) {
@@ -47,34 +48,41 @@ const Register = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        setLoading(true);
         console.log(pic)
-
-        if (password !== confirmpassword) {
-            SetError("Passwords Do not Match");
+        if (!name || !email || !password) {
+            SetError("Required all the fields");
+            setLoading(false);
         }
         else {
-            setMessage(null);
-            try {
-                const config = {
-                    headers: {
-                        "Content-type": "application/json",
-                    },
-                };
 
-                setLoading(true);
-                const { data } = await axios.post("/api/users",
-                    { name, pic, email, password },
-                    config
-                );
-                setLoading(false);
-                // localStorage.setItem("userInfo", JSON.stringify(data));
-                console.log(data);
-                Navigate('/login')
-            } catch (error) {
-                console.error("Registration Error:", error);
-                SetError(error.response.data.message);
+            if (password !== confirmpassword) {
+                SetError("Passwords Do not Match");
+            }
+            else {
+                setMessage(null);
+                try {
+                    const config = {
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                    };
 
-                setLoading(false);
+                    setLoading(true);
+                    const { data } = await axios.post("/api/users",
+                        { name, pic, email, password },
+                        config
+                    );
+                    setLoading(false);
+                    localStorage.setItem("userInfo", JSON.stringify(data));
+                    console.log(data);
+                    Navigate('/login')
+                } catch (error) {
+                    console.error("Registration Error:", error);
+                    SetError(error.response.data.message);
+
+                    setLoading(false);
+                }
             }
         }
         console.log(pic)

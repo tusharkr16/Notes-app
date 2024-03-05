@@ -26,27 +26,32 @@ const Createnote = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        console.log(title, content, category);
-        try {
-            setLoading(true);
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${userInfo.token}`
+        if (!title || !content || !category) {
+            setError("Please fill all the fields");
+        }
+        else {
+            console.log(title, content, category);
+            try {
+                setLoading(true);
+                const config = {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `Bearer ${userInfo.token}`
+                    }
                 }
-            }
 
-            const { data } = await axios.post(`http://localhost:5000/api/notes/create`, {
-                title, content, category
-            },
-                config
-            );
-            setLoading(false);
-            Navigate('/myNotes');
-        } catch (error) {
-            console.log(error);
-            setError(error.response ? error.response.data.message : "An error occurred");
-            setLoading(false)
+                const { data } = await axios.post(`http://localhost:5000/api/notes/create`, {
+                    title, content, category
+                },
+                    config
+                );
+                setLoading(false);
+                Navigate('/myNotes');
+            } catch (error) {
+                console.log(error);
+                setError(error.response ? error.response.data.message : "An error occurred");
+                setLoading(false)
+            }
         }
     }
 
