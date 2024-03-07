@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Row } from 'react-bootstrap'
 import { Form, Button, Col } from 'react-bootstrap';
 import { Link, useNavigate } from "react-router-dom";
@@ -16,35 +16,69 @@ const Register = () => {
     );
     const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmPassword] = useState("");
-    const [picMessage, setPicMessage] = useState(null);
     const [error, SetError] = useState();
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // const postDetails = async (pics) => {
+    //     console.log(pics);
+    //     if (!pics) {
+    //         return setMessage("Please select an Image")
+    //     }
+    //     setMessage(null);
+    //     if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
+    //         const data = new FormData();
+    //         data.append('file', pics)
+    //         data.append('upload_preset', 'Notezipper')
+    //         data.append('cloud_name', 'dpiud4zo4')
+    //         const response = await fetch('https://api.cloudinary.com/v1_1/dpiud4zo4/image/upload', {
+    //             method: "POST",
+    //             body: data,
+    //         }).then((res) => res.json()).then((data) => setPic(data.url.toString())).catch((err) => {
+    //             console.log(err);
+    //         })
+    //     }
+    //     else {
+    //         console.log('please select correct format');
+    //     }
+
+    //     console.log(pic);
+    // }
     const postDetails = async (pics) => {
         console.log(pics);
+
         if (!pics) {
-            return setMessage("Please select an Image")
-        }
-        setMessage(null);
-        if (pics.type == 'image/jpeg' || pics.type == 'image/png') {
-            const data = new FormData();
-            data.append('file', pics)
-            data.append('upload_preset', 'Notezipper')
-            data.append('cloud_name', 'dpiud4zo4')
-            const response = await fetch('https://api.cloudinary.com/v1_1/dpiud4zo4/image/upload', {
-                method: "POST",
-                body: data,
-            }).then((res) => res.json()).then((data) => setPic(data.url.toString())).catch((err) => {
-                console.log(err);
-            })
-        }
-        else {
-            console.log('please select correct format');
+            return setMessage("Please select an Image");
         }
 
-        console.log(pic);
-    }
+        setMessage(null);
+
+        try {
+            const data = new FormData();
+            data.append('file', pics);
+            data.append('upload_preset', 'Notezipper');
+            data.append('cloud_name', 'dpiud4zo4');
+
+            const response = await fetch('https://api.cloudinary.com/v1_1/dpiud4zo4/image/upload', {
+                method: 'POST',
+                body: data,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result.url) {
+                setPic(result.url.toString());
+                console.log(result);
+            } else {
+                console.error('Unexpected Cloudinary response:', result);
+            }
+        } catch (err) {
+            console.error('Error during image upload:', err);
+        }
+    };
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -76,7 +110,7 @@ const Register = () => {
                     setLoading(false);
                     localStorage.setItem("userInfo", JSON.stringify(data));
                     console.log(data);
-                    Navigate('/login')
+                    Navigate('/login', { replace: true });
                 } catch (error) {
                     console.error("Registration Error:", error);
                     SetError(error.response.data.message);
@@ -89,12 +123,6 @@ const Register = () => {
 
     }
 
-    // useEffect(() => {
-    //     const userInfo = localStorage.getItem("userInfo");
-    //     if (userInfo) {
-    //         Navigate('/login')
-    //     }
-    // }, [Navigate])
     return (
         <Screen title="REGISTER">
             <div className="container">

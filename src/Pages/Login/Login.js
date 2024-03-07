@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Screen from '../Screen'
 import Form from 'react-bootstrap/Form';
 import { Button, Col, Row } from 'react-bootstrap';
@@ -36,7 +36,7 @@ const Login = () => {
             console.log(data);
             localStorage.setItem('userInfo', JSON.stringify(data));
             setLoading(false);
-            // Navigate('/myNotes');
+            Navigate('/myNotes');
         } catch (error) {
             console.error("Login Error:", error);
             if (error.response && error.response.data && error.response.data.message) {
@@ -48,12 +48,12 @@ const Login = () => {
         }
     }
 
-    useEffect(() => {
-        const userInfo = localStorage.getItem("userInfo");
-        if (userInfo) {
-            Navigate('/myNotes')
-        }
-    }, [Navigate])
+    // useEffect(() => {
+    //     const userInfo = localStorage.getItem("userInfo");
+    //     if (userInfo) {
+    //         Navigate('/myNotes')
+    //     }
+    // }, [Navigate])
     return (
         <Screen title={'Login'}>
             <div className="loginContainer">
