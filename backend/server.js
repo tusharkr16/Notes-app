@@ -4,11 +4,13 @@ const cors = require('cors');
 require('./db/db');
 const userRoutes = require('./routes/routes');
 const notesRoutes = require('./routes/notesRoutes');
+const path = require('path');
 
 const app = express();
 dotenv.config();
 app.use(express.json())
 app.use(cors());
+app.use(express.static(path.join(__dirname, "build")));
 
 const PORT = process.env.PORT || 4000;
 
